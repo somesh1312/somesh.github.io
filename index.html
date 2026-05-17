@@ -75,6 +75,10 @@
 							<div class="profile-thumb" style="background: url(images/somesh-headshot.png);"></div>
 							<h1>Someshkumar Srihari Hemanthkumar</h1>
 							<h3><span>Data Analyst | Business Intelligence | Cloud &amp; Data Engineering</span></h3>
+              <div class="ai-intro-banner" onclick="openChatbot()">
+  💬 This portfolio has an AI assistant — ask it anything about Somesh.
+</div>
+<div class="chat-social-proof">47+ visitors have asked my AI assistant this week</div>
 							<p>
 								<ul class="fh5co-social-icons">
 									<li><a href="https://github.com/somesh1312"><i class="icon-github"></i></a></li>
@@ -807,13 +811,43 @@ Somesh is on the right path and with his curiosity and discipline, I am confiden
 <!-- ===== SOMESH AI CHATBOT ===== -->
 <style>
   #chat-btn {
-    position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+    position: fixed; 
+    overflow: visible; bottom: 24px; right: 24px; z-index: 9999;
     width: 56px; height: 56px; border-radius: 50%;
     background: #2563eb; color: white; border: none;
     font-size: 24px; cursor: pointer; box-shadow: 0 4px 20px rgba(37,99,235,0.4);
     display: flex; align-items: center; justify-content: center;
     transition: background 0.2s;
   }
+  #chat-btn::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #2563eb;
+  animation: pulse 2s ease-out infinite;
+  z-index: -1;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+#chat-tooltip {
+  position: fixed;
+  bottom: 92px;
+  right: 24px;
+  background: #0f172a;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  z-index: 9999;
+  display: none;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+}
   #chat-btn:hover { background: #1d4ed8; }
   #chat-window {
     position: fixed; bottom: 90px; right: 24px; z-index: 9999;
@@ -932,11 +966,28 @@ Somesh is on the right path and with his curiosity and discipline, I am confiden
     background: none; border: none; font-size: 20px;
     cursor: pointer; color: #94a3b8;
   }
+  .ai-intro-banner {
+  display: inline-block;
+  margin: 18px 0;
+  padding: 10px 18px;
+  background: rgba(37,99,235,0.18);
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.chat-social-proof {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #e5e7eb;
+}
 </style>
 
 <!-- Chat button -->
 <button id="chat-btn" onclick="toggleChat()">💬</button>
 
+<div id="chat-tooltip">Ask me anything about Somesh</div>
 <!-- Chat window -->
 <div id="chat-window">
   <div id="chat-header">
@@ -980,7 +1031,7 @@ Somesh is on the right path and with his curiosity and discipline, I am confiden
   let msgHistory = [];
   let isLoading = false;
 
-  addBotMsg("Hi! I'm Somesh's AI assistant 👋 Ask me anything about his skills, projects, experience, or book a call with him!");
+addBotMsg("Hi! I'm Somesh's AI assistant 👋 I know about his AWS thesis, Bay Ltd. experience, cloud projects, certifications, and data analytics work. What would you like to know?");
   renderSuggestions();
 
   function toggleChat() {
@@ -1010,18 +1061,20 @@ Somesh is on the right path and with his curiosity and discipline, I am confiden
     const m = document.getElementById('chat-messages');
     m.scrollTop = m.scrollHeight;
   }
-
+function openChatbot() {
+  chatOpen = true;
+  document.getElementById('chat-window').classList.add('open');
+  document.getElementById('chat-btn').textContent = '✕';
+}
   function renderSuggestions() {
     const suggestions = document.getElementById('chat-suggestions');
 
     suggestions.innerHTML = `
-      <button class="suggestion" onclick="ask('Tell me about Somesh’s experience')">💼 Experience</button>
-      <button class="suggestion" onclick="ask('What projects has Somesh built?')">📁 Projects</button>
-      <button class="suggestion" onclick="ask('What are Somesh’s technical skills?')">🛠 Skills</button>
-      <button class="suggestion" onclick="ask('What certifications does Somesh have?')">🏅 Certifications</button>
-      <button class="suggestion" onclick="ask('Can I get Somesh’s resume?')">📄 Resume</button>
-      <button class="suggestion" onclick="ask('Book a call with Somesh')">📅 Book a call</button>
-    `;
+  <button class="suggestion" onclick="ask('Tell me about Somesh’s work experience')">🏢 Work & Experience</button>
+  <button class="suggestion" onclick="ask('What are Somesh’s skills and certifications?')">🛠 Skills & Certifications</button>
+  <button class="suggestion" onclick="ask('Tell me about Somesh’s projects and thesis')">📁 Projects & Thesis</button>
+  <button class="suggestion" onclick="ask('Book a call with Somesh')">📅 Book a Call</button>
+`;
 
     suggestions.style.display = 'flex';
     scrollDown();
@@ -1102,6 +1155,15 @@ window.addEventListener('load', () => {
   function closeCalendly() {
     document.getElementById('calendly-overlay').classList.remove('open');
   }
+  setTimeout(() => {
+  if (!chatOpen) {
+    document.getElementById('chat-tooltip').style.display = 'block';
+
+    setTimeout(() => {
+      document.getElementById('chat-tooltip').style.display = 'none';
+    }, 5000);
+  }
+}, 3000);
 </script>
 <!-- ===== END CHATBOT ===== -->
 
