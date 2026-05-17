@@ -1070,10 +1070,29 @@ function openChatbot() {
     const suggestions = document.getElementById('chat-suggestions');
 
     suggestions.innerHTML = `
-  <button class="suggestion" onclick="ask('Tell me about Somesh’s work experience')">🏢 Work & Experience</button>
-  <button class="suggestion" onclick="ask('What are Somesh’s skills and certifications?')">🛠 Skills & Certifications</button>
-  <button class="suggestion" onclick="ask('Tell me about Somesh’s projects and thesis')">📁 Projects & Thesis</button>
-  <button class="suggestion" onclick="ask('Book a call with Somesh')">📅 Book a Call</button>
+  <button class="suggestion" onclick="ask('Tell me about Somesh’s work experience')">
+    🏢 Work & Experience
+  </button>
+
+  <button class="suggestion" onclick="ask('What are Somesh’s technical skills?')">
+    🛠 Technical Skills
+  </button>
+
+  <button class="suggestion" onclick="ask('What certifications does Somesh have?')">
+    🏅 Certifications
+  </button>
+
+  <button class="suggestion" onclick="ask('Tell me about Somesh’s projects and thesis')">
+    📁 Projects & Thesis
+  </button>
+
+  <button class="suggestion" onclick="ask('Can I view Somesh’s resume?')">
+    📄 Resume
+  </button>
+
+  <button class="suggestion" onclick="ask('Book a call with Somesh')">
+    📅 Book a Call
+  </button>
 `;
 
     suggestions.style.display = 'flex';
