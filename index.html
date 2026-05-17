@@ -933,10 +933,10 @@ Somesh is on the right path and with his curiosity and discipline, I am confiden
 
   let chatOpen = false;
   let msgHistory = [];
-  let suggestionsHidden = false;
+  let isLoading = false;
 
-  // Add opening bot message
   addBotMsg("Hi! I'm Somesh's AI assistant 👋 Ask me anything about his skills, projects, experience, or book a call with him!");
+  renderSuggestions();
 
   function toggleChat() {
     chatOpen = !chatOpen;
@@ -947,9 +947,10 @@ Somesh is on the right path and with his curiosity and discipline, I am confiden
   function addBotMsg(text) {
     const el = document.createElement('div');
     el.className = 'msg bot';
-    el.textContent = text;
+    el.innerHTML = text;
     document.getElementById('chat-messages').appendChild(el);
     scrollDown();
+    return el;
   }
 
   function addUserMsg(text) {
@@ -965,42 +966,53 @@ Somesh is on the right path and with his curiosity and discipline, I am confiden
     m.scrollTop = m.scrollHeight;
   }
 
-  function showSuggestions() {
-  const suggestions = document.getElementById('chat-suggestions');
+  function renderSuggestions() {
+    const suggestions = document.getElementById('chat-suggestions');
 
-  suggestions.style.display = 'flex';
+    suggestions.innerHTML = `
+      <button class="suggestion" onclick="ask('Tell me about Somesh’s experience')">💼 Experience</button>
+      <button class="suggestion" onclick="ask('What projects has Somesh built?')">📁 Projects</button>
+      <button class="suggestion" onclick="ask('What are Somesh’s technical skills?')">🛠 Skills</button>
+      <button class="suggestion" onclick="ask('What certifications does Somesh have?')">🏅 Certifications</button>
+      <button class="suggestion" onclick="ask('Can I get Somesh’s resume?')">📄 Resume</button>
+      <button class="suggestion" onclick="ask('Book a call with Somesh')">📅 Book a call</button>
+    `;
 
-  suggestions.innerHTML = `
-    <button class="suggestion" onclick="ask('Where is Somesh based?')">📍 Location</button>
-    <button class="suggestion" onclick="ask('What is Somesh doing at Bay Ltd.?')">💼 Current role</button>
-    <button class="suggestion" onclick="ask('What are Somesh’s strongest skills?')">🛠 Skills</button>
-    <button class="suggestion" onclick="ask('What projects has Somesh built?')">📁 Projects</button>
-    <button class="suggestion" onclick="ask('Can I get Somesh’s resume?')">📄 Resume</button>
-    <button class="suggestion" onclick="ask('Book a call with Somesh')">📅 Book a call</button>
-  `;
-}
+    suggestions.style.display = 'flex';
+    scrollDown();
+  }
 
   async function ask(question) {
+    if (isLoading) return;
+
     addUserMsg(question);
     msgHistory.push({ role: 'user', content: question });
+
     await getReply();
   }
 
   async function sendMsg() {
+    if (isLoading) return;
+
     const input = document.getElementById('chat-input');
     const text = input.value.trim();
+
     if (!text) return;
+
     input.value = '';
     addUserMsg(text);
     msgHistory.push({ role: 'user', content: text });
+
     await getReply();
   }
 
   async function getReply() {
-    addBotMsg('Thinking...');
-    showSuggestions();
-    const msgs = document.getElementById('chat-messages');
-    const thinking = msgs.lastChild;
+    isLoading = true;
+
+    const sendButton = document.getElementById('chat-send');
+    sendButton.disabled = true;
+
+    const thinking = addBotMsg('Thinking...');
 
     try {
       const res = await fetch(API_URL, {
@@ -1008,8 +1020,10 @@ Somesh is on the right path and with his curiosity and discipline, I am confiden
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: msgHistory }),
       });
+
       const data = await res.json();
       const reply = data.message || 'Sorry, something went wrong.';
+
       thinking.remove();
 
       if (reply.includes('OPEN_CALENDLY')) {
@@ -1019,9 +1033,17 @@ Somesh is on the right path and with his curiosity and discipline, I am confiden
         addBotMsg(reply);
         msgHistory.push({ role: 'assistant', content: reply });
       }
-    } catch {
+
+      renderSuggestions();
+
+    } catch (error) {
       thinking.remove();
       addBotMsg('Connection error. Please try again.');
+      console.error(error);
+      renderSuggestions();
+    } finally {
+      isLoading = false;
+      sendButton.disabled = false;
     }
   }
 
