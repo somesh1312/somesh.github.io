@@ -844,13 +844,40 @@ Somesh is on the right path and with his curiosity and discipline, I am confiden
   .msg { max-width: 80%; padding: 10px 13px; border-radius: 16px; font-size: 13px; line-height: 1.5; }
   .msg.bot { background: #1e293b; color: #e2e8f0; border-bottom-left-radius: 4px; align-self: flex-start; }
   .msg.user { background: #2563eb; color: white; border-bottom-right-radius: 4px; align-self: flex-end; }
-  #chat-suggestions { padding: 0 12px 8px; display: flex; flex-direction: column; gap: 6px; }
-  .suggestion {
-    background: #1e3a5f; color: #93c5fd; border: 1px solid #1d4ed8;
-    border-radius: 12px; padding: 7px 12px; font-size: 12px;
-    cursor: pointer; text-align: left; transition: background 0.2s;
-  }
-  .suggestion:hover { background: #1e40af; }
+#chat-suggestions {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  border-top: 1px solid #1e293b;
+  background: #0f172a;
+  scrollbar-width: none;
+}
+
+#chat-suggestions::-webkit-scrollbar {
+  display: none;
+}
+
+.suggestion {
+  flex: 0 0 auto;
+  background: #1e3a5f;
+  color: #93c5fd;
+  border: 1px solid #2563eb;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.2s, color 0.2s;
+}
+
+.suggestion:hover {
+  background: #2563eb;
+  color: white;
+}
   #chat-input-row {
     border-top: 1px solid #1e293b; padding: 12px;
     display: flex; gap: 8px;
