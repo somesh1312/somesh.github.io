@@ -845,16 +845,27 @@ Somesh is on the right path and with his curiosity and discipline, I am confiden
   .msg.bot { background: #1e293b; color: #e2e8f0; border-bottom-left-radius: 4px; align-self: flex-start; }
   .msg.user { background: #2563eb; color: white; border-bottom-right-radius: 4px; align-self: flex-end; }
 #chat-suggestions {
+
   padding: 8px 10px;
+
   display: flex;
+
   flex-direction: row;
+
   gap: 8px;
+
   overflow-x: auto;
+
   overflow-y: hidden;
+
   white-space: nowrap;
+
   border-top: 1px solid #1e293b;
+
   background: #0f172a;
-  scrollbar-width: none;
+
+  scrollbar-width: thin;
+
 }
 
 #chat-suggestions::-webkit-scrollbar {
@@ -862,16 +873,23 @@ Somesh is on the right path and with his curiosity and discipline, I am confiden
 }
 
 .suggestion {
+
   flex: 0 0 auto;
+
   background: #1e3a5f;
+
   color: #93c5fd;
+
   border: 1px solid #2563eb;
+
   border-radius: 999px;
+
   padding: 8px 14px;
+
   font-size: 12px;
+
   cursor: pointer;
-  text-align: center;
-  transition: background 0.2s, color 0.2s;
+
 }
 
 .suggestion:hover {
@@ -958,7 +976,7 @@ Somesh is on the right path and with his curiosity and discipline, I am confiden
   const API_URL = 'https://somesh-chatbot-api.vercel.app/api/chat';
   const CALENDLY_URL = 'https://calendly.com/somesh1st';
 
-  let chatOpen = false;
+  let chatOpen = true;
   let msgHistory = [];
   let isLoading = false;
 
@@ -1008,7 +1026,10 @@ Somesh is on the right path and with his curiosity and discipline, I am confiden
     suggestions.style.display = 'flex';
     scrollDown();
   }
-
+window.addEventListener('load', () => {
+  document.getElementById('chat-window').classList.add('open');
+  document.getElementById('chat-btn').textContent = '✕';
+});
   async function ask(question) {
     if (isLoading) return;
 
