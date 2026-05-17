@@ -1,2 +1,4 @@
 somesh-chatbot-api/
 somesh-portfolio/
+.vercel
+.env*.local
