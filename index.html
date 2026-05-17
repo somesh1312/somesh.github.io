@@ -965,15 +965,22 @@ Somesh is on the right path and with his curiosity and discipline, I am confiden
     m.scrollTop = m.scrollHeight;
   }
 
-  function hideSuggestions() {
-    if (!suggestionsHidden) {
-      document.getElementById('chat-suggestions').style.display = 'none';
-      suggestionsHidden = true;
-    }
-  }
+  function showSuggestions() {
+  const suggestions = document.getElementById('chat-suggestions');
+
+  suggestions.style.display = 'flex';
+
+  suggestions.innerHTML = `
+    <button class="suggestion" onclick="ask('Where is Somesh based?')">📍 Location</button>
+    <button class="suggestion" onclick="ask('What is Somesh doing at Bay Ltd.?')">💼 Current role</button>
+    <button class="suggestion" onclick="ask('What are Somesh’s strongest skills?')">🛠 Skills</button>
+    <button class="suggestion" onclick="ask('What projects has Somesh built?')">📁 Projects</button>
+    <button class="suggestion" onclick="ask('Can I get Somesh’s resume?')">📄 Resume</button>
+    <button class="suggestion" onclick="ask('Book a call with Somesh')">📅 Book a call</button>
+  `;
+}
 
   async function ask(question) {
-    hideSuggestions();
     addUserMsg(question);
     msgHistory.push({ role: 'user', content: question });
     await getReply();
@@ -984,7 +991,6 @@ Somesh is on the right path and with his curiosity and discipline, I am confiden
     const text = input.value.trim();
     if (!text) return;
     input.value = '';
-    hideSuggestions();
     addUserMsg(text);
     msgHistory.push({ role: 'user', content: text });
     await getReply();
@@ -992,6 +998,7 @@ Somesh is on the right path and with his curiosity and discipline, I am confiden
 
   async function getReply() {
     addBotMsg('Thinking...');
+    showSuggestions();
     const msgs = document.getElementById('chat-messages');
     const thinking = msgs.lastChild;
 
